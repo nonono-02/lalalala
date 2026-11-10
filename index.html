@@ -34,6 +34,13 @@ const right = document.getElementById("right");
 const wide = window.matchMedia("(min-width: 1001px)");
 let loaded = [];
 
+// on desktop, the photo columns stop where the letter stops
+function fit() {
+  const h = wide.matches ? letter.offsetHeight + "px" : "";
+  left.style.maxHeight = h; right.style.maxHeight = h;
+}
+new ResizeObserver(fit).observe(letter);
+
 function layout() {
   left.textContent = ""; right.textContent = "";
   let hl = 0, hr = 0;
@@ -45,6 +52,7 @@ function layout() {
     if (!wide.matches || hl <= hr) { left.appendChild(fig); hl += h; }
     else { right.appendChild(fig); hr += h; }
   });
+  fit();
 }
 
 Promise.all(PHOTOS.map((src, i) => new Promise(done => {
