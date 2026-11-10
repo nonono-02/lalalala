@@ -18,13 +18,17 @@ a{color:inherit}
 .hero p{margin:0;color:var(--brown);font-size:1.1rem}
 .heart{width:26px;height:26px;fill:var(--brown);vertical-align:middle}
 
-/* collage: each photo grows in proportion to its shape, so every row fills the width */
-.gallery{display:flex;flex-wrap:wrap;gap:14px;max-width:1100px;margin:0 auto;padding:16px 20px 24px}
-.gallery::after{content:"";flex-grow:1000000}
-.shot{margin:0;background:#fff;padding:7px;border-radius:12px;border:2px solid var(--tan);
-  box-shadow:4px 4px 0 var(--sky)}
-.shot img,.shot .ph{display:block;width:100%;height:auto;border-radius:7px}
+/* A square crop keeps the gallery tidy while preserving each photo's proportions. */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:14px;
+  max-width:1100px;margin:0 auto;padding:16px 20px 24px}
+.shot{aspect-ratio:1;margin:0;background:#fff;padding:7px;border-radius:12px;border:2px solid var(--tan);
+  box-shadow:4px 4px 0 var(--sky);overflow:hidden}
+.shot img,.shot .ph{display:block;width:100%;height:100%;border-radius:7px}
+.shot img{object-fit:cover}
 .shot .ph{background:linear-gradient(135deg,var(--sky),#b5d3f7);display:grid;place-items:center}
+@media (min-width:414px) and (max-width:607px){
+  .shot:last-child:nth-child(odd){grid-column:1/-1;width:calc((100% - 14px)/2);justify-self:center}
+}
 
 .actions{text-align:center;padding:20px 20px 64px}
 .btn{display:inline-block;background:var(--brown);color:#fff;text-decoration:none;font:600 1.2rem var(--head);
@@ -41,5 +45,7 @@ a{color:inherit}
 .letter p{font-family:var(--read);font-size:1.2rem;line-height:1.85;margin:0 0 1.2em;color:#2b2a33;
   max-width:62ch;white-space:pre-line}
 .letter p:last-child{margin-bottom:0;color:var(--brown)}
+.letter p.letter-signoff{margin-top:1.5em;padding-top:.8em;border-top:1px solid var(--tan);
+  font-weight:600;text-align:right}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
