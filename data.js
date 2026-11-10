@@ -2,8 +2,8 @@
 
 const SITE = {
   months: 1,                 // change each month
-  from: "Your Name",
-  to: "Their Name"
+  from: "Meem",
+  to: "TJ"
 };
 
 // GALLERY: add one line per photo. Put the image file in the photos folder.
