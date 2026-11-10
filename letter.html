@@ -11,18 +11,13 @@
 </head>
 <body>
 <main class="letter-wrap">
-  <article class="letter" id="letter"><h1>A letter for you 💗 </h1></article>
+  <article class="letter" id="letter"><h1>A letter for you</h1></article>
 </main>
 <div class="actions"><a class="btn alt" href="index.html">Back to photos</a></div>
 <script src="data.js"></script>
 <script>
 const sheet = document.getElementById("letter");
-LETTER.forEach((t, i) => {
-  const p = document.createElement("p");
-  if (i === LETTER.length - 1) p.className = "letter-signoff";
-  p.textContent = t;
-  sheet.appendChild(p);
-});
+LETTER.forEach(t => { const p = document.createElement("p"); p.textContent = t; sheet.appendChild(p); });
 </script>
 </body>
 </html>

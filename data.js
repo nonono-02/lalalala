@@ -1,13 +1,9 @@
-// EDIT THIS FILE. It is the only file you need to change.
-
 const SITE = {
   months: 1,                 // change each month
   from: "Meem",
   to: "TJ"
 };
 
-// GALLERY: add one line per photo. Put the image file in the photos folder.
-// Photos of any shape fit together on their own.
 const PHOTOS = [
   "photos/847790508_1152578547318825_4306692073886717656_n.png",
   "photos/892789119_1786620595933472_6465513671721217021_n.jpg",
@@ -34,8 +30,7 @@ const PHOTOS = [
   "photos/903281864_1132154522870598_4859192977378404993_n.jpg"
 ];
 
-// LETTER: add a string per paragraph. Add as many as you like.
-const LETTER = [
+const MESSAGES = [
   `You're more special to me than you'll ever be able to understand, my love. Sometimes I try to find the perfect words to explain what you mean to me, but somehow every word still feels too small. You've become such a beautiful and important part of my life that I honestly can't imagine my days feeling the same without you. You're not just someone who's in my life, you've become someone who's deeply connected to my heart. Before you, I never imagined that one person could become this important to me. Somehow, you slowly became a part of everything. You're the first person I want to tell when something makes me happy, the person I think about when I'm having a difficult day, and the person my heart naturally searches for without me even realizing it.`,
   `I hope you always remember how much you matter to me, especially on the days when you don't feel like you're enough. You are appreciated in ways you probably don't even notice. I love your heart, your personality, your kindness, your way of thinking, and all those tiny details that make you who you are. Even the things you may see as flaws are things I would never want to change about you. Your happiness will always mean something to me. I find myself thinking about whether you're okay, whether you've eaten, whether you're tired, or whether something is bothering you.`,
   `Not because I'm obligated to care, but because caring about you has become something that comes naturally to me. When someone becomes this important to your heart, you start caring about the smallest things without even thinking about it. Thank you for every moment you've shared with me, every smile, every laugh, every conversation, and every memory we made together. Whether you realize it or not, you've brought so much happiness into my life and changed me in ways I'll always be grateful for. You've shown me how beautiful it can be to genuinely care about someone and love them with your whole heart.`,
