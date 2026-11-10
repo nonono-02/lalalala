@@ -13,7 +13,7 @@
 <header class="hero">
   <div class="num" id="num">1</div>
   <h1 id="title">Happy monthsary</h1>
-  <p><svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 5 6.4 5c2 0 3.7 1.1 5.6 3.2C13.9 6.1 15.6 5 17.6 5 21 5 23.1 8.3 21.600 11.800 19.500 16.400 12 21 12 21z"/></svg> <span id="names"></span> <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 5 6.4 5c2 0 3.7 1.1 5.6 3.2C13.900 6.100 15.600 5 17.600 5 21 5 23.100 8.300 21.600 11.800 19.500 16.400 12 21 12 21z"/></svg></p>
+  <p><svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 5 6.4 5c2 0 3.7 1.1 5.6 3.2C13.9 6.1 15.6 5 17.6 5 21 5 23.1 8.3 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg> <span id="names"></span> <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 5 6.4 5c2 0 3.7 1.1 5.6 3.2C13.9 6.1 15.6 5 17.6 5 21 5 23.1 8.3 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg></p>
 </header>
 <main class="gallery" id="gallery"></main>
 <div class="actions"><a class="btn" href="letter.html">Read this message</a></div>
@@ -22,28 +22,22 @@
 document.getElementById("num").textContent = SITE.months;
 document.getElementById("title").textContent = SITE.months === 1 ? "Month together" : "Months together";
 document.getElementById("names").textContent = SITE.from + " and " + SITE.to;
-const BASE = 220;
+const BASE = 300;
 const box = document.getElementById("gallery");
 function size(fig, ratio){
   fig.style.flexGrow = ratio;
   fig.style.flexBasis = (ratio * BASE) + "px";
+  fig.firstChild.style.paddingBottom = (100 / ratio) + "%";
 }
-const fake = [0.8, 1, 0.75, 1.25, 0.67, 1.5];
 PHOTOS.forEach((src, i) => {
   const fig = document.createElement("figure");
   fig.className = "shot";
+  fig.appendChild(document.createElement("i"));
   size(fig, 1);
   const img = new Image();
   img.alt = "Our photo " + (i + 1);
   img.onload = () => size(fig, img.naturalWidth / img.naturalHeight);
-  img.onerror = () => {
-    const r = fake[i % fake.length];
-    const ph = document.createElement("div");
-    ph.className = "ph"; ph.style.aspectRatio = r;
-    ph.innerHTML = '<svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 5 6.4 5c2 0 3.7 1.1 5.6 3.2C13.9 6.1 15.6 5 17.6 5 21 5 23.1 8.3 21.600 11.800 19.500 16.400 12 21 12 21z"/></svg>';
-    img.replaceWith(ph);
-    size(fig, r);
-  };
+  img.onerror = () => { fig.style.display = "none"; };
   img.src = src;
   fig.appendChild(img);
   box.appendChild(fig);
