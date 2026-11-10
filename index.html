@@ -12,36 +12,50 @@
 <body>
 <header class="hero">
   <div class="num" id="num">1</div>
-  <h1 id="title">Happy monthsary</h1>
+  <h1 id="title">Month together</h1>
   <p><svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 5 6.4 5c2 0 3.7 1.1 5.6 3.2C13.9 6.1 15.6 5 17.6 5 21 5 23.1 8.3 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg> <span id="names"></span> <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 5 6.4 5c2 0 3.7 1.1 5.6 3.2C13.9 6.1 15.6 5 17.6 5 21 5 23.1 8.3 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg></p>
 </header>
-<main class="gallery" id="gallery"></main>
-<div class="actions"><a class="btn" href="letter.html">Read this message</a></div>
+<main class="layout">
+  <aside class="side" id="left"></aside>
+  <article class="letter" id="letter"><h2>A letter for you</h2></article>
+  <aside class="side" id="right"></aside>
+</main>
 <script src="data.js"></script>
 <script>
 document.getElementById("num").textContent = SITE.months;
 document.getElementById("title").textContent = SITE.months === 1 ? "Month together" : "Months together";
 document.getElementById("names").textContent = SITE.from + " and " + SITE.to;
-const BASE = 300;
-const box = document.getElementById("gallery");
-function size(fig, ratio){
-  fig.style.flexGrow = ratio;
-  fig.style.flexBasis = (ratio * BASE) + "px";
-  fig.firstChild.style.paddingBottom = (100 / ratio) + "%";
+
+const letter = document.getElementById("letter");
+(typeof MESSAGES !== "undefined" ? MESSAGES : LETTER).forEach(t => { const p = document.createElement("p"); p.textContent = t; letter.appendChild(p); });
+
+const left = document.getElementById("left");
+const right = document.getElementById("right");
+const wide = window.matchMedia("(min-width: 1001px)");
+let loaded = [];
+
+function layout() {
+  left.textContent = ""; right.textContent = "";
+  let hl = 0, hr = 0;
+  loaded.forEach(img => {
+    const fig = document.createElement("figure");
+    fig.className = "shot";
+    fig.appendChild(img.cloneNode());
+    const h = img.naturalHeight / img.naturalWidth;
+    if (!wide.matches || hl <= hr) { left.appendChild(fig); hl += h; }
+    else { right.appendChild(fig); hr += h; }
+  });
 }
-PHOTOS.forEach((src, i) => {
-  const fig = document.createElement("figure");
-  fig.className = "shot";
-  fig.appendChild(document.createElement("i"));
-  size(fig, 1);
+
+Promise.all(PHOTOS.map((src, i) => new Promise(done => {
   const img = new Image();
   img.alt = "Our photo " + (i + 1);
-  img.onload = () => size(fig, img.naturalWidth / img.naturalHeight);
-  img.onerror = () => { fig.style.display = "none"; };
+  img.onload = () => done(img);
+  img.onerror = () => done(null);
   img.src = src;
-  fig.appendChild(img);
-  box.appendChild(fig);
-});
+}))).then(list => { loaded = list.filter(Boolean); layout(); });
+
+wide.addEventListener("change", layout);
 </script>
 </body>
 </html>
