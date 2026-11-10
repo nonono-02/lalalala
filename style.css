@@ -1,0 +1,45 @@
+:root{
+  --navy:#17356b; --blue:#3b78d1; --sky:#d6e8fd; --mist:#eef6ff;
+  --brown:#8b5a3c; --tan:#c79a74; --paper:#fffdf9;
+  --head:"Fredoka","Trebuchet MS",sans-serif;
+  --read:"Lora",Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--mist);color:var(--navy);font-family:var(--head);
+  background-image:radial-gradient(var(--sky) 2px,transparent 2px);background-size:28px 28px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--brown);outline-offset:3px}
+
+.hero{text-align:center;padding:56px 20px 28px}
+.hero .num{font-size:clamp(4.5rem,18vw,8rem);font-weight:700;line-height:1;color:var(--blue);
+  text-shadow:4px 4px 0 var(--tan)}
+.hero h1{margin:6px 0 4px;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:600}
+.hero p{margin:0;color:var(--brown);font-size:1.1rem}
+.heart{width:26px;height:26px;fill:var(--brown);vertical-align:middle}
+
+/* collage: each photo grows in proportion to its shape, so every row fills the width */
+.gallery{display:flex;flex-wrap:wrap;gap:14px;max-width:1100px;margin:0 auto;padding:16px 20px 24px}
+.gallery::after{content:"";flex-grow:1000000}
+.shot{margin:0;background:#fff;padding:7px;border-radius:12px;border:2px solid var(--tan);
+  box-shadow:4px 4px 0 var(--sky)}
+.shot img,.shot .ph{display:block;width:100%;height:auto;border-radius:7px}
+.shot .ph{background:linear-gradient(135deg,var(--sky),#b5d3f7);display:grid;place-items:center}
+
+.actions{text-align:center;padding:20px 20px 64px}
+.btn{display:inline-block;background:var(--brown);color:#fff;text-decoration:none;font:600 1.2rem var(--head);
+  padding:14px 34px;border-radius:999px;border:0;cursor:pointer;box-shadow:0 5px 0 #5f3a24;
+  transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #5f3a24}
+.btn.alt{background:var(--blue);box-shadow:0 5px 0 var(--navy)}
+.btn.alt:hover{box-shadow:0 3px 0 var(--navy)}
+
+.letter-wrap{max-width:720px;margin:0 auto;padding:40px 20px 24px}
+.letter{background:var(--paper);border:2px solid var(--tan);border-radius:18px;
+  padding:clamp(24px,6vw,56px);box-shadow:8px 8px 0 var(--sky)}
+.letter h1{margin:0 0 24px;font-size:1.7rem;color:var(--blue)}
+.letter p{font-family:var(--read);font-size:1.2rem;line-height:1.85;margin:0 0 1.2em;color:#2b2a33;
+  max-width:62ch;white-space:pre-line}
+.letter p:last-child{margin-bottom:0;color:var(--brown)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
