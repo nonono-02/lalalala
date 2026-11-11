@@ -17,7 +17,15 @@
 </header>
 <main class="layout">
   <aside class="side" id="left"></aside>
-  <article class="letter" id="letter"><h2>A letter for you</h2></article>
+  <article class="letter" id="letter">
+    <h2>A letter for you</h2>
+    <div class="pages" id="pages"></div>
+    <nav class="nav" aria-label="Letter pages">
+      <button class="arrow" id="prev" aria-label="Previous page"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <span class="count" id="count" aria-live="polite"></span>
+      <button class="arrow" id="next" aria-label="Next page"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    </nav>
+  </article>
   <aside class="side" id="right"></aside>
 </main>
 <script src="data.js"></script>
@@ -27,7 +35,47 @@ document.getElementById("title").textContent = SITE.months === 1 ? "Month togeth
 document.getElementById("names").textContent = SITE.from + " and " + SITE.to;
 
 const letter = document.getElementById("letter");
-(typeof MESSAGES !== "undefined" ? MESSAGES : LETTER).forEach(t => { const p = document.createElement("p"); p.textContent = t; letter.appendChild(p); });
+const TEXT = typeof MESSAGES !== "undefined" ? MESSAGES : LETTER;
+const pagesBox = document.getElementById("pages");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+const count = document.getElementById("count");
+const pages = TEXT.map(t => {
+  const d = document.createElement("div");
+  d.className = "page";
+  const p = document.createElement("p");
+  p.textContent = t;
+  d.appendChild(p);
+  pagesBox.appendChild(d);
+  return d;
+});
+let now = 0;
+function show(i) {
+  now = Math.max(0, Math.min(pages.length - 1, i));
+  pages.forEach((d, n) => {
+    d.classList.toggle("on", n === now);
+    d.classList.toggle("before", n < now);
+    d.setAttribute("aria-hidden", n === now ? "false" : "true");
+  });
+  count.textContent = (now + 1) + " / " + pages.length;
+  prev.disabled = now === 0;
+  next.disabled = now === pages.length - 1;
+}
+prev.onclick = () => show(now - 1);
+next.onclick = () => show(now + 1);
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") show(now - 1);
+  if (e.key === "ArrowRight") show(now + 1);
+});
+let x0 = null;
+letter.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
+letter.addEventListener("touchend", e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 50) show(now + (dx < 0 ? 1 : -1));
+  x0 = null;
+});
+show(0);
 
 const left = document.getElementById("left");
 const right = document.getElementById("right");
