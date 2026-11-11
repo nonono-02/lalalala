@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 <header class="hero">
@@ -28,7 +28,7 @@
   </article>
   <aside class="side" id="right"></aside>
 </main>
-<script src="data.js"></script>
+<script src="data.js?v=3"></script>
 <script>
 document.getElementById("num").textContent = SITE.months;
 document.getElementById("title").textContent = SITE.months === 1 ? "Month together" : "Months together";
@@ -55,6 +55,7 @@ function show(i) {
   pages.forEach((d, n) => {
     d.classList.toggle("on", n === now);
     d.classList.toggle("before", n < now);
+    d.style.display = n === now ? "block" : "none";
     d.setAttribute("aria-hidden", n === now ? "false" : "true");
   });
   count.textContent = (now + 1) + " / " + pages.length;
@@ -76,6 +77,15 @@ letter.addEventListener("touchend", e => {
   x0 = null;
 });
 show(0);
+
+// keep the card as tall as the longest page, so the layout never jumps
+function fitBook() {
+  pagesBox.style.minHeight = "";
+  let tallest = 0;
+  pages.forEach(d => { d.style.display = "block"; tallest = Math.max(tallest, d.offsetHeight); });
+  pagesBox.style.minHeight = tallest + "px";
+  pages.forEach((d, n) => { d.style.display = n === now ? "block" : "none"; });
+}
 
 const left = document.getElementById("left");
 const right = document.getElementById("right");
@@ -112,6 +122,9 @@ Promise.all(PHOTOS.map((src, i) => new Promise(done => {
 }))).then(list => { loaded = list.filter(Boolean); layout(); });
 
 wide.addEventListener("change", layout);
+fitBook();
+window.addEventListener("resize", () => { fitBook(); fit(); });
+if (document.fonts) document.fonts.ready.then(() => { fitBook(); fit(); });
 </script>
 </body>
 </html>
