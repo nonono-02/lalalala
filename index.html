@@ -14,6 +14,7 @@
 .letter .page{display:none;visibility:visible;opacity:1;transform:none}
 .letter .page.on{display:block;animation:turn .3s ease}
 .letter .page.before.on{animation-name:turnback}
+.shot{animation:turn .35s ease}
 .letter .page p{margin:0;color:#2b2a33}
 .letter .page p + p{margin-top:1.4em}
 .letter .page p.sign{color:#8b5a3c}
@@ -27,7 +28,7 @@
 .letter .arrow:hover:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #5f3a24}
 .letter .arrow:disabled{opacity:.3;cursor:default}
 .letter .arrow:focus-visible{outline:3px solid #3b78d1;outline-offset:3px}
-@media (prefers-reduced-motion:reduce){.letter .page.on{animation:none}}
+@media (prefers-reduced-motion:reduce){.letter .page.on,.shot{animation:none}}
 </style>
 </head>
 <body>
@@ -89,6 +90,7 @@ function show(i) {
     d.setAttribute("aria-hidden", n === now ? "false" : "true");
   });
   count.textContent = (now + 1) + " / " + pages.length;
+  if (window.onPage) window.onPage();
   prev.disabled = now === 0;
   next.disabled = now === pages.length - 1;
 }
@@ -132,7 +134,10 @@ new ResizeObserver(fit).observe(letter);
 function layout() {
   left.textContent = ""; right.textContent = "";
   let hl = 0, hr = 0;
-  loaded.forEach(img => {
+  // each letter page shows its own share of the photos
+  const n = loaded.length, P = pages.length;
+  const mine = loaded.slice(Math.floor(now * n / P), Math.floor((now + 1) * n / P));
+  mine.forEach(img => {
     const fig = document.createElement("figure");
     fig.className = "shot";
     fig.appendChild(img.cloneNode());
@@ -152,6 +157,7 @@ Promise.all(PHOTOS.map((src, i) => new Promise(done => {
 }))).then(list => { loaded = list.filter(Boolean); layout(); });
 
 wide.addEventListener("change", layout);
+window.onPage = layout;
 fitBook();
 window.addEventListener("resize", () => { fitBook(); fit(); });
 if (document.fonts) document.fonts.ready.then(() => { fitBook(); fit(); });
