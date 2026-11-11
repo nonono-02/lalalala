@@ -7,7 +7,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
+<style>
+/* book pages and arrows live here so they work even if style.css is an older copy */
+.letter .pages{display:block}
+.letter .page{display:none;visibility:visible;opacity:1;transform:none}
+.letter .page.on{display:block;animation:turn .3s ease}
+.letter .page.before.on{animation-name:turnback}
+.letter .page p{margin:0;color:#2b2a33}
+.letter .page p + p{margin-top:1.4em}
+.letter .page p.sign{color:#8b5a3c}
+@keyframes turn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes turnback{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.letter .nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px;
+  padding-top:18px;border-top:2px dotted #c79a74}
+.letter .count{font-size:1.05rem;color:#8b5a3c;font-weight:600}
+.letter .arrow{width:48px;height:48px;border-radius:50%;border:0;background:#8b5a3c;cursor:pointer;padding:0;
+  display:grid;place-items:center;box-shadow:0 4px 0 #5f3a24;transition:transform .15s,box-shadow .15s,opacity .15s}
+.letter .arrow:hover:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #5f3a24}
+.letter .arrow:disabled{opacity:.3;cursor:default}
+.letter .arrow:focus-visible{outline:3px solid #3b78d1;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.letter .page.on{animation:none}}
+</style>
 </head>
 <body>
 <header class="hero">
@@ -21,14 +42,14 @@
     <h2>A letter for you</h2>
     <div class="pages" id="pages"></div>
     <nav class="nav" aria-label="Letter pages">
-      <button class="arrow" id="prev" aria-label="Previous page"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="arrow" id="prev" aria-label="Previous page"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <span class="count" id="count" aria-live="polite"></span>
-      <button class="arrow" id="next" aria-label="Next page"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      <button class="arrow" id="next" aria-label="Next page"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </nav>
   </article>
   <aside class="side" id="right"></aside>
 </main>
-<script src="data.js?v=3"></script>
+<script src="data.js?v=4"></script>
 <script>
 document.getElementById("num").textContent = SITE.months;
 document.getElementById("title").textContent = SITE.months === 1 ? "Month together" : "Months together";
@@ -40,12 +61,21 @@ const pagesBox = document.getElementById("pages");
 const prev = document.getElementById("prev");
 const next = document.getElementById("next");
 const count = document.getElementById("count");
-const pages = TEXT.map(t => {
+// a line that starts with a dash is a sign-off, so it joins the paragraph before it
+const groups = [];
+TEXT.forEach(t => {
+  if (/^\s*[-\u2013\u2014]/.test(t) && groups.length) groups[groups.length - 1].push(t);
+  else groups.push([t]);
+});
+const pages = groups.map(g => {
   const d = document.createElement("div");
   d.className = "page";
-  const p = document.createElement("p");
-  p.textContent = t;
-  d.appendChild(p);
+  g.forEach((t, i) => {
+    const p = document.createElement("p");
+    p.textContent = t;
+    if (i > 0) p.className = "sign";
+    d.appendChild(p);
+  });
   pagesBox.appendChild(d);
   return d;
 });

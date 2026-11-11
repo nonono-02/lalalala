@@ -26,24 +26,6 @@ body{margin:0;overflow-x:hidden;background:var(--mist);color:var(--navy);font-fa
 .letter p{font-family:var(--read);font-size:1.2rem;line-height:1.85;margin:0;color:#2b2a33;
   white-space:pre-line;overflow-wrap:break-word}
 
-/* book pages: every page shares one cell, so the card stays as tall as the longest page */
-.pages{display:block}
-.page{display:none}
-.page.on{display:block;animation:turn .3s ease}
-.page.before.on{animation-name:turnback}
-@keyframes turn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
-@keyframes turnback{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
-.page:last-child p{color:var(--brown)}
-.nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px;
-  padding-top:18px;border-top:2px dotted var(--tan)}
-.count{font-size:1.05rem;color:var(--brown);font-weight:600}
-.arrow{width:48px;height:48px;border-radius:50%;border:0;background:var(--brown);cursor:pointer;
-  display:grid;place-items:center;box-shadow:0 4px 0 #5f3a24;transition:transform .15s,box-shadow .15s,opacity .15s}
-.arrow svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.arrow:hover:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #5f3a24}
-.arrow:disabled{opacity:.3;cursor:default}
-.arrow:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){.page.on{animation:none}}
 
 /* each photo keeps its own shape and fills its column */
 .shot{margin:0 0 18px}
